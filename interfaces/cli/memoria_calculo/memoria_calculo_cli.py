@@ -75,9 +75,10 @@ class MemoriaDeCalculoCLI:
         self.carga.tipo_carga = self.service.tipo_de_carga_selector(tipo_carga)
         print(f"Interruptor termomagnético seleccionado: {self.carga.interruptor} A")
 
-    def seleccion_conductor(self):
+    def seleccion_conductor(self, tipo_sistema: TipoSistema):
         print("C)  SELECCION DEL CONDUCTOR")
         print("c.1) Por capacidad de conducción")
+        self.service.seleccion_de_cable_por_capacidad_de_conduccion(tipo_sistema)
         print("c.2) Por caída de tensión")
         pass
 
@@ -104,6 +105,7 @@ class MemoriaDeCalculoCLI:
 
                 else:
                     self.seleccionar_interruptor_manual(tipo_sistema, tipo_carga)
+                    
                     
 
             except (ValueError, IndexError) as e:
