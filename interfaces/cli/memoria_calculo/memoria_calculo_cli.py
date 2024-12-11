@@ -61,7 +61,7 @@ class MemoriaDeCalculoCLI:
         """
         print("A)  CALCULO DE LA CORRIENTE NOMINAL")
         self.service.calcular_amperaje(self.carga)
-        print(f"Corriente nominal es: {self.carga.amperaje:.2f} A")
+        print(f"Corriente nominal es: {self.carga.corriente_nominal:.2f} A")
 
         print("B)  CALCULO DEL INTERRUPTOR TERMOMAGNETICO")
         self.service.seleccionar_interruptor(self.carga)
@@ -75,6 +75,11 @@ class MemoriaDeCalculoCLI:
         self.carga.tipo_carga = self.service.tipo_de_carga_selector(tipo_carga)
         print(f"Interruptor termomagnético seleccionado: {self.carga.interruptor} A")
 
+    def seleccion_conductor(self):
+        print("C)  SELECCION DEL CONDUCTOR")
+        print("c.1) Por capacidad de conducción")
+        print("c.2) Por caída de tensión")
+        pass
 
     def ejecutar(self):
         while True:

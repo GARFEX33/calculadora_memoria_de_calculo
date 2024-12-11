@@ -3,7 +3,7 @@ import bisect
 
 class CalculoDeInterruptorStrategy(ABC):
     @abstractmethod
-    def calcular(self, corriente: float) -> float:
+    def calcular(self, corriente: float) -> int:
         pass
     
     def seleccionar(self, corriente_nominal: float) -> int:
@@ -17,16 +17,16 @@ class CalculoDeInterruptorStrategy(ABC):
 
 
 class AlimentadorStrategy(CalculoDeInterruptorStrategy):
-    def calcular(self, corriente: float) -> float:
-        return corriente * 1.25
+    def calcular(self, corriente: float) -> int:
+        return self.seleccionar(corriente * 1.25)
     
 
 
 class MotorStrategy(CalculoDeInterruptorStrategy):
-    def calcular(self, corriente: float) -> float:
-        return corriente * 2.0
+    def calcular(self, corriente: float) -> int:
+        return self.seleccionar(corriente * 2)
 
 
 class FiltroStrategy(CalculoDeInterruptorStrategy):
-    def calcular(self, corriente: float) -> float:
-        return corriente * 1.35
+    def calcular(self, corriente: float) -> int:
+        return self.seleccionar(corriente * 1.35)

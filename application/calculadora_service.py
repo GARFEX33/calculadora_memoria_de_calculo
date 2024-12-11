@@ -13,7 +13,7 @@ from domain.strategies.calculo_interruptor_strategy import AlimentadorStrategy, 
 
 class CalculadoraService:
 
-    def calcular_amperaje(self, carga: Carga) -> float:
+    def calcular_amperaje(self, carga: Carga):
         return carga.calcular_amperaje()
     
     def tipo_de_sistema_selector(self, tipo_sistema: TipoSistema) -> CalculadoraAmperajeStrategy:
@@ -37,5 +37,8 @@ class CalculadoraService:
         else:
             raise ValueError("Tipo de carga no válida")
     
-    def seleccionar_interruptor(self, carga: Carga) -> int:
+    def seleccionar_interruptor(self, carga: Carga):
         return carga.seleccionar_interruptor()
+    
+#    def seleccion_de_cable_por_capacidad_de_conduccion(self):
+#        return SeleccionConduccionTrifasicasStrategy()

@@ -11,17 +11,18 @@ class Carga(BaseModel):
     potencia: float
     tension: float
     factor_potencia: float
-    amperaje: float = 0
+    corriente_nominal: float = 0
     hilos: int = 4
     longitud: float = 0
     caida_tension: float = 0
     interruptor: int = 0
+    temperatura_ambiente: int = 30
     
         # Configuración para permitir tipos arbitrarios
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     def calcular_amperaje(self):
-        self.amperaje = self.tipo_circuito.calcular_amperaje(self.potencia, self.tension, self.factor_potencia)
+        self.corriente_nominal = self.tipo_circuito.calcular_amperaje(self.potencia, self.tension, self.factor_potencia)
         
     def seleccionar_interruptor(self):
-        self.interruptor  = self.tipo_carga.seleccionar(self.amperaje)
+        self.interruptor  = self.tipo_carga.calcular(self.corriente_nominal)
