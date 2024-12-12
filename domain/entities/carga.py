@@ -17,6 +17,7 @@ class Carga(BaseModel):
     caida_tension: float = 0
     interruptor: int = 0
     temperatura_ambiente: int = 30
+    capacidad_conduccion: float = 0
     
         # Configuración para permitir tipos arbitrarios
     model_config = ConfigDict(arbitrary_types_allowed=True)

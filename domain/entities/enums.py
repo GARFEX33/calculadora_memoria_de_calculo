@@ -10,3 +10,7 @@ class TipoCarga(Enum):
     ALIMENTADOR = "Alimentador"
     MOTOR = "Motor"
     FILTRO = "Filtro"
+
+class Canalizacion(Enum):
+    TUBERIA = "Tubería"
+    CHAROLA = "Charola"

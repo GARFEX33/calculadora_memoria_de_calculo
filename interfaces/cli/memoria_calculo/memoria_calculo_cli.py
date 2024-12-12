@@ -3,7 +3,7 @@
 from application.calculadora_service import CalculadoraService
 from domain.entities.cable import Cable
 from domain.entities.carga import Carga
-from domain.entities.enums import TipoCarga, TipoSistema
+from domain.entities.enums import Canalizacion, TipoCarga, TipoSistema
 from domain.strategies.calculadora_amperaje_strategy import TrifasicoCalculadora
 from domain.strategies.calculo_interruptor_strategy import AlimentadorStrategy
 
@@ -13,9 +13,11 @@ from domain.strategies.calculo_interruptor_strategy import AlimentadorStrategy
 class MemoriaDeCalculoCLI:
     def __init__(self, service: CalculadoraService):
         self.service = service
+        self.canalizacion = Canalizacion.TUBERIA
         self.cable = Cable(
             calibre="",
             temperatura=60,
+            amperaje=0,
         )
         self.carga = Carga(
                         nombre="Carga",
@@ -84,13 +86,17 @@ class MemoriaDeCalculoCLI:
     def seleccion_conductor(self,tipo_sistema: TipoSistema, opcion: str):
         print("C)  SELECCION DEL CONDUCTOR")
         print("c.1) Por capacidad de conducción")
-        capacidad_conduccion = self.service.seleccion_de_cable_por_capacidad_de_conduccion( tipo_sistema ,self.carga, self.cable, opcion)
-        print(f"Corriente por capacidad de conduccion es: {capacidad_conduccion:.2f}")
-        
+        self.carga.capacidad_conduccion = self.service.seleccion_de_cable_por_capacidad_de_conduccion( tipo_sistema ,self.carga, self.cable, opcion)
+        print(f"Corriente por capacidad de conduccion es: {self.carga.capacidad_conduccion :.2f}")
+        self.cable.calibre = self.service.selecionar_cable(self.carga,self.canalizacion , tipo_sistema, opcion)[0]
+        self.cable.amperaje = self.service.selecionar_cable(self.carga,self.canalizacion , tipo_sistema, opcion)[1]
+        print(f"Calibre de cable seleccionado: {self.cable.calibre} con amperaje de {self.cable.amperaje} A, canalizacion de {self.canalizacion.value}")
         
         print("c.2) Por caída de tensión")
         pass
 
+    
+    
     def ejecutar(self):
         while True:
 
@@ -116,6 +122,7 @@ class MemoriaDeCalculoCLI:
                 else:
                     self.seleccionar_interruptor_manual(tipo_sistema, tipo_carga)
                     self.seleccion_conductor(tipo_sistema, opcion_inicio)
+                    
 
             except (ValueError, IndexError) as e:
                 print(f"Entrada no válida: {e}. Intente nuevamente.")

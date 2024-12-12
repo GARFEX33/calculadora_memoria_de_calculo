@@ -4,6 +4,7 @@ from pydantic import BaseModel
 class Cable(BaseModel):
     calibre: str
     temperatura: int
+    amperaje: int
     # mm2: float
     # diametro: float
     # material: str

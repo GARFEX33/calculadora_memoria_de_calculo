@@ -1,8 +1,9 @@
 # application/calculadora_service.py
 
+from typing import Tuple
 from domain.entities.cable import Cable
 from domain.entities.carga import Carga
-from domain.entities.enums import TipoCarga, TipoSistema
+from domain.entities.enums import Canalizacion, TipoCarga, TipoSistema
 from domain.strategies.calculadora_amperaje_strategy import (
     CalculadoraAmperajeStrategy,
     TrifasicoCalculadora,
@@ -46,12 +47,20 @@ class CalculadoraService:
         
         if tipo_sistema == TipoSistema.TRIFASICO and opcion == "1":
             return SeleccionConduccionTrifasicaStrategy().capacidad_de_conduccion(cable, carga)
-        if tipo_sistema == TipoSistema.TRIFASICO and opcion == "2":
+        elif tipo_sistema == TipoSistema.TRIFASICO and opcion == "2":
             return SeleccionConduccionTrifasicaITMStrategy().capacidad_de_conduccion(cable, carga)
         
         # elif tipo_sistema == TipoSistema.BIFASICO:
         #     return BifasicoCalculadora()
         # elif tipo_sistema == TipoSistema.MONOFASICO:
         #     return MonofasicoCalculadora()
+        else:
+            raise ValueError("Tipo de sistema no válido")
+    
+    def selecionar_cable(self, carga: Carga, canalizacion: Canalizacion, tipo_sistema: TipoSistema, opcion:str) -> Tuple[str, int]:
+        if tipo_sistema == TipoSistema.TRIFASICO and opcion == "1":
+            return SeleccionConduccionTrifasicaStrategy().seleccionar_cable(carga, canalizacion)
+        elif tipo_sistema == TipoSistema.TRIFASICO and opcion == "2":
+            return SeleccionConduccionTrifasicaITMStrategy().seleccionar_cable(carga, canalizacion)
         else:
             raise ValueError("Tipo de sistema no válido")
