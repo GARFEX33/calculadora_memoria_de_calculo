@@ -27,3 +27,4 @@ class Carga(BaseModel):
         
     def seleccionar_interruptor(self):
         self.interruptor  = self.tipo_carga.calcular(self.corriente_nominal)
+    

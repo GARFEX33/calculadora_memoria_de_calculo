@@ -1,4 +1,7 @@
 from abc import ABC, abstractmethod
+from typing import List, Tuple
+
+from data.data import DataList
 
 class FactorAgrupamientoStrategy(ABC):
         @abstractmethod
@@ -7,15 +10,8 @@ class FactorAgrupamientoStrategy(ABC):
 
 class FactorAgrupamiento(FactorAgrupamientoStrategy):
     def __init__(self):
-        self.rangos: list[tuple[int, int, float]]= [
-            (1, 3, 1.0),
-            (4, 6, 0.8),
-            (7, 9, 0.7),
-            (10, 20, 0.5),
-            (21, 30, 0.45),
-            (31, 40, 0.4),
-            (41, 100, 0.35) 
-        ]
+        self.rangos: List[Tuple[int, int, float]] = DataList().get_factorAgrupamiento() 
+
     
     def seleccionar(self, hilos: int) -> float:
         for rango in self.rangos:

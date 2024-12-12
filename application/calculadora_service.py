@@ -58,9 +58,12 @@ class CalculadoraService:
             raise ValueError("Tipo de sistema no válido")
     
     def selecionar_cable(self, carga: Carga, canalizacion: Canalizacion, tipo_sistema: TipoSistema, opcion:str) -> Tuple[str, int]:
+        print("Seleccionar cable:")
         if tipo_sistema == TipoSistema.TRIFASICO and opcion == "1":
+
             return SeleccionConduccionTrifasicaStrategy().seleccionar_cable(carga, canalizacion)
         elif tipo_sistema == TipoSistema.TRIFASICO and opcion == "2":
+            print("Seleccionar cable trifasico opción 2")
             return SeleccionConduccionTrifasicaITMStrategy().seleccionar_cable(carga, canalizacion)
         else:
             raise ValueError("Tipo de sistema no válido")

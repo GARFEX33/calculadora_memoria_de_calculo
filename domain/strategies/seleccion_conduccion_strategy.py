@@ -15,12 +15,16 @@ class SeleccionConduccionStrategy(ABC):
         pass
     
     def seleccionar_cable(self, carga: Carga, canalizacion: Canalizacion) -> Tuple[str, int]:
+        print("Entro a seleccionar cable")
         if carga.corriente_nominal < 100 and canalizacion == Canalizacion.TUBERIA:
+            print("Entro en menos de 100")
             seleccionar = SeleccionarCableCobreTemp60Tubo()
-        elif carga.corriente_nominal >= 200 and canalizacion == Canalizacion.TUBERIA:   
+        elif carga.corriente_nominal >= 100 and canalizacion == Canalizacion.TUBERIA:   
+            print("Entro en mayor de 200")
             seleccionar = SeleccionarCableCobreTemp75Tubo()
         else:    
             raise NotImplementedError("Este método debe ser implementado por las subclases")
+        print("paso de seleccionar cable")
         return seleccionar.seleccionar(carga)
     
     def capacidad_de_conduccion(self, cable:Cable, carga: Carga)->float:

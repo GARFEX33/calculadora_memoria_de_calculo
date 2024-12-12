@@ -8,8 +8,6 @@ from domain.strategies.calculadora_amperaje_strategy import TrifasicoCalculadora
 from domain.strategies.calculo_interruptor_strategy import AlimentadorStrategy
 
 
-
-
 class MemoriaDeCalculoCLI:
     def __init__(self, service: CalculadoraService):
         self.service = service
@@ -32,7 +30,7 @@ class MemoriaDeCalculoCLI:
 
     
     def menu_inicio_programa(self):
-        print("Iniciar Memoria de Calculo:")
+        print("\nIniciar Memoria de Calculo:\n")
         print("1. Calcular Corriente Nominal y ajustes")
         print("2. Seleccionar Interruptor Termomagnetico")
         print("3. Salir")
@@ -87,16 +85,14 @@ class MemoriaDeCalculoCLI:
         print("C)  SELECCION DEL CONDUCTOR")
         print("c.1) Por capacidad de conducción")
         self.carga.capacidad_conduccion = self.service.seleccion_de_cable_por_capacidad_de_conduccion( tipo_sistema ,self.carga, self.cable, opcion)
+        self.cable.seleccionar_temperatura_cable(self.carga.capacidad_conduccion)
         print(f"Corriente por capacidad de conduccion es: {self.carga.capacidad_conduccion :.2f}")
-        self.cable.calibre = self.service.selecionar_cable(self.carga,self.canalizacion , tipo_sistema, opcion)[0]
-        self.cable.amperaje = self.service.selecionar_cable(self.carga,self.canalizacion , tipo_sistema, opcion)[1]
-        print(f"Calibre de cable seleccionado: {self.cable.calibre} con amperaje de {self.cable.amperaje} A, canalizacion de {self.canalizacion.value}")
+        self.cable.calibre, self.cable.amperaje = self.service.selecionar_cable(self.carga,self.canalizacion , tipo_sistema, opcion)
+        print(f"Calibre seleccionado: {self.cable.calibre} con ampacidad {self.cable.amperaje} A, en canalizacion de {self.canalizacion.value}")
         
         print("c.2) Por caída de tensión")
         pass
 
-    
-    
     def ejecutar(self):
         while True:
 
@@ -118,11 +114,11 @@ class MemoriaDeCalculoCLI:
                     self.solicitar_datos_carga(tipo_sistema, tipo_carga)
                     self.realizar_calculos()
                     self.seleccion_conductor(tipo_sistema, opcion_inicio)
-
+                    print("Memoria de cálculo finalizada.")
                 else:
                     self.seleccionar_interruptor_manual(tipo_sistema, tipo_carga)
                     self.seleccion_conductor(tipo_sistema, opcion_inicio)
-                    
+                    print("Memoria de cálculo finalizada.")
 
             except (ValueError, IndexError) as e:
                 print(f"Entrada no válida: {e}. Intente nuevamente.")

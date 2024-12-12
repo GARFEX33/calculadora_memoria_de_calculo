@@ -9,6 +9,7 @@ class CalculadoraAmperajeStrategy(ABC):
     def calcular_amperaje(self, potencia: float, voltaje: float, factor_potencia: float) -> float:
         pass
 
+
 class TrifasicoCalculadora(CalculadoraAmperajeStrategy):
     def calcular_amperaje(self, potencia: float, voltaje: float, factor_potencia: float) -> float:
         return potencia / ((voltaje/1000) * sqrt(3) * factor_potencia)
