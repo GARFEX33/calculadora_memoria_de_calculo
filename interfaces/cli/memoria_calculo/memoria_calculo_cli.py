@@ -1,6 +1,7 @@
 # interfaces/cli/calcula_amperaje/calcula_amperaje_cli.py
 
 from application.calculadora_service import CalculadoraService
+from domain.entities.cable import Cable
 from domain.entities.carga import Carga
 from domain.entities.enums import TipoCarga, TipoSistema
 from domain.strategies.calculadora_amperaje_strategy import TrifasicoCalculadora
@@ -12,6 +13,10 @@ from domain.strategies.calculo_interruptor_strategy import AlimentadorStrategy
 class MemoriaDeCalculoCLI:
     def __init__(self, service: CalculadoraService):
         self.service = service
+        self.cable = Cable(
+            calibre="",
+            temperatura=60,
+        )
         self.carga = Carga(
                         nombre="Carga",
                         tipo_circuito= TrifasicoCalculadora(), 
@@ -73,12 +78,16 @@ class MemoriaDeCalculoCLI:
         self.carga.tension = float(input("Ingrese el voltaje en V: "))
         self.carga.tipo_circuito = self.service.tipo_de_sistema_selector(tipo_sistema)
         self.carga.tipo_carga = self.service.tipo_de_carga_selector(tipo_carga)
+        self.carga.corriente_nominal = self.carga.interruptor
         print(f"Interruptor termomagnético seleccionado: {self.carga.interruptor} A")
 
-    def seleccion_conductor(self, tipo_sistema: TipoSistema):
+    def seleccion_conductor(self,tipo_sistema: TipoSistema, opcion: str):
         print("C)  SELECCION DEL CONDUCTOR")
         print("c.1) Por capacidad de conducción")
-        self.service.seleccion_de_cable_por_capacidad_de_conduccion(tipo_sistema)
+        capacidad_conduccion = self.service.seleccion_de_cable_por_capacidad_de_conduccion( tipo_sistema ,self.carga, self.cable, opcion)
+        print(f"Corriente por capacidad de conduccion es: {capacidad_conduccion:.2f}")
+        
+        
         print("c.2) Por caída de tensión")
         pass
 
@@ -102,11 +111,11 @@ class MemoriaDeCalculoCLI:
 
                     self.solicitar_datos_carga(tipo_sistema, tipo_carga)
                     self.realizar_calculos()
+                    self.seleccion_conductor(tipo_sistema, opcion_inicio)
 
                 else:
                     self.seleccionar_interruptor_manual(tipo_sistema, tipo_carga)
-                    
-                    
+                    self.seleccion_conductor(tipo_sistema, opcion_inicio)
 
             except (ValueError, IndexError) as e:
                 print(f"Entrada no válida: {e}. Intente nuevamente.")

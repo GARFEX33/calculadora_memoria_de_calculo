@@ -1,5 +1,6 @@
 # application/calculadora_service.py
 
+from domain.entities.cable import Cable
 from domain.entities.carga import Carga
 from domain.entities.enums import TipoCarga, TipoSistema
 from domain.strategies.calculadora_amperaje_strategy import (
@@ -9,7 +10,7 @@ from domain.strategies.calculadora_amperaje_strategy import (
     MonofasicoCalculadora,
 )
 from domain.strategies.calculo_interruptor_strategy import AlimentadorStrategy, FiltroStrategy, MotorStrategy
-from domain.strategies.seleccion_conduccion_strategy import SeleccionConduccionStrategy, SeleccionConduccionTrifasicasStrategy
+from domain.strategies.seleccion_conduccion_strategy import  SeleccionConduccionTrifasicaITMStrategy, SeleccionConduccionTrifasicaStrategy
 
 
 class CalculadoraService:
@@ -41,10 +42,13 @@ class CalculadoraService:
     def seleccionar_interruptor(self, carga: Carga):
         return carga.seleccionar_interruptor()
     
-    def seleccion_de_cable_por_capacidad_de_conduccion(self, tipo_sistema: TipoSistema, carga: Carga) -> SeleccionConduccionStrategy:
+    def seleccion_de_cable_por_capacidad_de_conduccion(self, tipo_sistema: TipoSistema, carga: Carga, cable:Cable, opcion:str) -> float:
         
-        if tipo_sistema == TipoSistema.TRIFASICO:
-            return SeleccionConduccionTrifasicasStrategy().capacidad_de_conduccion(carga)
+        if tipo_sistema == TipoSistema.TRIFASICO and opcion == "1":
+            return SeleccionConduccionTrifasicaStrategy().capacidad_de_conduccion(cable, carga)
+        if tipo_sistema == TipoSistema.TRIFASICO and opcion == "2":
+            return SeleccionConduccionTrifasicaITMStrategy().capacidad_de_conduccion(cable, carga)
+        
         # elif tipo_sistema == TipoSistema.BIFASICO:
         #     return BifasicoCalculadora()
         # elif tipo_sistema == TipoSistema.MONOFASICO:

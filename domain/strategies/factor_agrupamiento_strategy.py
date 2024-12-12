@@ -14,7 +14,7 @@ class FactorAgrupamiento(FactorAgrupamientoStrategy):
             (10, 20, 0.5),
             (21, 30, 0.45),
             (31, 40, 0.4),
-            (41, int('inf'), 0.35) 
+            (41, 100, 0.35) 
         ]
     
     def seleccionar(self, hilos: int) -> float:

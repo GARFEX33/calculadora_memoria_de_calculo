@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+from domain.entities.cable import Cable
+from domain.entities.carga import Carga
 from domain.strategies.factor_agrupamiento_strategy import FactorAgrupamiento
 from domain.strategies.factor_temperatura_strategy import FactorTemperatura60A30Cstrategy, FactorTemperatura75A30Cstrategy
 
@@ -9,17 +11,17 @@ class SeleccionConduccionStrategy(ABC):
     def caida_de_tension(self) -> float:
         pass
     
-    def capacidad_de_conduccion(self, corriente_nominal: float, hilos: int, temperatura: int, temperatura_cable:int)->float:
-        return corriente_nominal /(self.factor_de_agrupamiento(hilos) * self.factor_temperatura(temperatura_cable,temperatura))
+    def capacidad_de_conduccion(self, cable:Cable, carga: Carga)->float:
+        return carga.corriente_nominal /(self.factor_de_agrupamiento(carga.hilos) * self.factor_temperatura(cable, carga))
     
-    def factor_temperatura(self, temperatura_cable: int, temperatura: int) -> float:
-        if temperatura_cable == 60:
+    def factor_temperatura(self, cable: Cable, carga: Carga) -> float:
+        if cable.temperatura == 60:
             seleccionar = FactorTemperatura60A30Cstrategy()
-        elif temperatura_cable == 75:
+        elif cable.temperatura == 75:
             seleccionar = FactorTemperatura75A30Cstrategy()
         else:
             raise ValueError("Temperatura no soportada")
-        return seleccionar.seleccionar(temperatura)
+        return seleccionar.seleccionar(carga.temperatura_ambiente)
  
     def factor_de_agrupamiento(self, hilos: int) -> float:
         return FactorAgrupamiento().seleccionar(hilos)
@@ -27,6 +29,12 @@ class SeleccionConduccionStrategy(ABC):
         
 
 
-class SeleccionConduccionTrifasicasStrategy(SeleccionConduccionStrategy):
+class SeleccionConduccionTrifasicaStrategy(SeleccionConduccionStrategy):
     def caida_de_tension(self):
         return 3.0
+
+class SeleccionConduccionTrifasicaITMStrategy(SeleccionConduccionStrategy):
+    def caida_de_tension(self):
+        return 3.0
+    def capacidad_de_conduccion(self, cable:Cable, carga: Carga)->float:
+        return carga.corriente_nominal
