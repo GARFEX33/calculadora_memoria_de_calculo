@@ -3,10 +3,10 @@ from typing import Tuple
 
 from domain.entities.cable import Cable
 from domain.entities.carga import Carga
-from domain.entities.enums import Canalizacion
+from domain.entities.enums import Canalizacion, TipoMaterialCable
 from domain.strategies.factor_agrupamiento_strategy import FactorAgrupamiento
 from domain.strategies.factor_temperatura_strategy import FactorTemperatura60A30Cstrategy, FactorTemperatura75A30Cstrategy
-from domain.strategies.seleccionar_cable_strategy import SeleccionarCableCobreTemp60Tubo, SeleccionarCableCobreTemp75Tubo
+from domain.strategies.seleccionar_cable_strategy import *
 
 class SeleccionConduccionStrategy(ABC):
 
@@ -14,17 +14,28 @@ class SeleccionConduccionStrategy(ABC):
     def caida_de_tension(self) -> float:
         pass
     
-    def seleccionar_cable(self, carga: Carga, canalizacion: Canalizacion) -> Tuple[str, int]:
-        print("Entro a seleccionar cable")
-        if carga.corriente_nominal < 100 and canalizacion == Canalizacion.TUBERIA:
-            print("Entro en menos de 100")
+    def seleccionar_cable(self, carga: Carga, cable: Cable, canalizacion: Canalizacion) -> Tuple[str, int]:
+        
+        if carga.corriente_nominal < 100 and canalizacion == Canalizacion.TUBERIA and carga.tension < 2000 and cable.material == TipoMaterialCable.COBRE:
             seleccionar = SeleccionarCableCobreTemp60Tubo()
-        elif carga.corriente_nominal >= 100 and canalizacion == Canalizacion.TUBERIA:   
-            print("Entro en mayor de 200")
+        elif carga.corriente_nominal >= 100 and canalizacion == Canalizacion.TUBERIA and carga.tension < 2000 and cable.material == TipoMaterialCable.COBRE:   
             seleccionar = SeleccionarCableCobreTemp75Tubo()
+        elif carga.corriente_nominal < 100 and canalizacion == Canalizacion.TUBERIA and carga.tension < 2000 and cable.material == TipoMaterialCable.ALUMINIO:
+            seleccionar = SeleccionarCableAluminioTemp60Tubo()
+        elif carga.corriente_nominal >= 100 and canalizacion == Canalizacion.TUBERIA and carga.tension < 2000 and cable.material == TipoMaterialCable.ALUMINIO:
+            seleccionar = SeleccionarCableAluminioTemp75Tubo()
+        elif carga.corriente_nominal < 100 and canalizacion == Canalizacion.CHAROLA and carga.tension < 2000 and cable.material == TipoMaterialCable.COBRE:
+            seleccionar = SeleccionarCableCobreTemp60Charola()
+        elif carga.corriente_nominal >= 100 and canalizacion == Canalizacion.CHAROLA and carga.tension < 2000 and cable.material == TipoMaterialCable.COBRE:
+            seleccionar = SeleccionarCableCobreTemp75Charola()
+        elif carga.corriente_nominal < 100 and canalizacion == Canalizacion.CHAROLA and carga.tension < 2000 and cable.material == TipoMaterialCable.ALUMINIO:
+            seleccionar = SeleccionarCableAluminioTemp60Charola()
+        elif carga.corriente_nominal >= 100 and canalizacion == Canalizacion.CHAROLA and carga.tension < 2000 and cable.material == TipoMaterialCable.ALUMINIO:
+            seleccionar = SeleccionarCableAluminioTemp75Charola()
+        
+        
         else:    
             raise NotImplementedError("Este método debe ser implementado por las subclases")
-        print("paso de seleccionar cable")
         return seleccionar.seleccionar(carga)
     
     def capacidad_de_conduccion(self, cable:Cable, carga: Carga)->float:
@@ -41,7 +52,6 @@ class SeleccionConduccionStrategy(ABC):
  
     def factor_de_agrupamiento(self, hilos: int) -> float:
         return FactorAgrupamiento().seleccionar(hilos)
-
 
 class SeleccionConduccionTrifasicaStrategy(SeleccionConduccionStrategy):
     def caida_de_tension(self):

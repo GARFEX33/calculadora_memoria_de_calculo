@@ -9,7 +9,7 @@ class FactorTemperaturaStrategy(ABC):
 class FactorTemperatura60A30Cstrategy(FactorTemperaturaStrategy):
     def __init__(self):
         # Rango de temperaturas y factores para cables de 60°C
-        self.rangos = DataList().get_FactorTemperatura60A30C()
+        self.rangos = DataList().get_factorTemperatura60A30C()
   
     def seleccionar(self, temperatura_ambiente: int) -> float:
         # Buscar en qué rango está la temperatura
@@ -21,7 +21,7 @@ class FactorTemperatura60A30Cstrategy(FactorTemperaturaStrategy):
 class FactorTemperatura75A30Cstrategy(FactorTemperaturaStrategy):
     def __init__(self):
         # Rango de temperaturas y factores para cables de 75°C
-            self.rangos = DataList().get_FactorTemperatura75A30C()
+            self.rangos = DataList().get_factorTemperatura75A30C()
 
     def seleccionar(self, temperatura_ambiente: int) -> float:
         # Buscar en qué rango está la temperatura

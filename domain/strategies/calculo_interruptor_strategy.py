@@ -21,7 +21,6 @@ class AlimentadorStrategy(CalculoDeInterruptorStrategy):
         return self.seleccionar(corriente * 1.25)
     
 
-
 class MotorStrategy(CalculoDeInterruptorStrategy):
     def calcular(self, corriente: float) -> int:
         return self.seleccionar(corriente * 2)
