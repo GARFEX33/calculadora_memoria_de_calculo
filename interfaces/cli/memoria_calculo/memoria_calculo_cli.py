@@ -87,6 +87,14 @@ class MemoriaDeCalculoCLI:
             print("Opción inválida. Intente de nuevo.")
             return self.menu_seleccion_canalizacion()
 
+    def seleccionar_numero_hilos_interruptor(self)->int:
+        if TipoSistema.ESTRELLA or TipoSistema.DELTA:
+            hilos = 3
+        else:
+            hilos = 1
+        
+        return hilos
+    
     def solicitar_datos_carga(self):
 
         self.carga = Carga(
@@ -105,14 +113,17 @@ class MemoriaDeCalculoCLI:
 
         print("B)  CALCULO DEL INTERRUPTOR TERMOMAGNETICO")
         self.service.seleccionar_interruptor(self.carga)
-        print(f"Interruptor termomagnético seleccionado: {self.carga.interruptor} A")
+        print(f"Bornes del interruptor termomagnético: {self.carga.bornes_interruptor}")
+
+        print(f"Interruptor termomagnético seleccionado: {self.seleccionar_numero_hilos_interruptor()}X{self.carga.interruptor}A")
 
     def seleccionar_interruptor_manual(self):
         print("B)  SELECCION DEL INTERRUPTOR TERMOMAGNETICO")
         self.carga.interruptor = int(input("Ingrese el interruptor termomagnético en A: "))
         self.carga.tension = float(input("Ingrese el voltaje en V: "))
         self.carga.corriente_nominal = self.carga.interruptor
-        print(f"Interruptor termomagnético seleccionado: {self.carga.interruptor} A")
+        print(f"Bornes del interruptor termomagnético: {self.carga.bornes_interruptor}")
+        print(f"Interruptor termomagnético seleccionado: {self.seleccionar_numero_hilos_interruptor()}X{self.carga.interruptor} A")
 
     def seleccion_conductor(self,opcion: str):
 
@@ -122,7 +133,7 @@ class MemoriaDeCalculoCLI:
         self.carga.capacidad_conduccion = self.service.seleccion_de_cable_por_capacidad_de_conduccion( self.tipo_circuito ,self.carga, self.cable, opcion)
         print(f"Corriente por capacidad de conduccion es: {self.carga.capacidad_conduccion :.2f}")
         self.cable.calibre, self.cable.amperaje = self.service.selecionar_cable(self.carga,self.cable,self.canalizacion , self.tipo_circuito, opcion)
-        print(f"Calibre seleccionado: {self.cable.calibre} en {self.cable.material.value} con ampacidad de {self.cable.amperaje} A, en canalizacion de {self.canalizacion.value}")
+        print(f"Cable calibre {self.cable.calibre} {self.cable.material.value} con ampacidad de {self.cable.amperaje} A, en canalizacion de {self.canalizacion.value}")
         
         print("c.2) Por caída de tensión")
         pass

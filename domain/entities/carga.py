@@ -22,6 +22,7 @@ class Carga(BaseModel):
     capacidad_conduccion: float = 0
     calcular_circuito: CalculadoraAmperajeStrategy  = TrifasicoCalculadora()
     calcular_tipo_carga: CalculoDeInterruptorStrategy = AlimentadorStrategy()
+    bornes_interruptor: int = 0
     
         # Configuración para permitir tipos arbitrarios
     model_config = ConfigDict(arbitrary_types_allowed=True)
@@ -30,5 +31,5 @@ class Carga(BaseModel):
      self.corriente_nominal = self.calcular_circuito.calcular_amperaje(self.potencia, self.tension, self.factor_potencia)
 
     def seleccionar_interruptor(self):
-      self.interruptor  = self.calcular_tipo_carga.calcular(self.corriente_nominal)
+      self.interruptor, self.bornes_interruptor   = self.calcular_tipo_carga.calcular(self.corriente_nominal)
       

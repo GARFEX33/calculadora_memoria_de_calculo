@@ -3,6 +3,43 @@ from typing import List, Tuple
 
 class DataList:
     
+    def get_lista_de_interruptores(self) -> List[Tuple[int, int]]:
+        interruptores = [
+                        (10, 1),
+                        (15, 1),
+                        (20, 1),
+                        (30, 1),
+                        (40, 1),
+                        (50, 1),
+                        (60, 1),
+                        (70, 1),
+                        (80, 1),
+                        (90, 1),
+                        (100, 1),
+                        (125, 1),
+                        (150, 1),
+                        (175, 1),
+                        (200, 1),
+                        (225, 1),
+                        (250, 1),
+                        (300, 2),
+                        (400, 2),
+                        (500, 2),
+                        (600, 2),
+                        (700, 3),
+                        (800, 3),
+                        (1000, 4),
+                        (1200, 4),
+                        (1600, 4),
+                        (2000, 6),
+                        (2500, 6),
+                        (3200, 6),
+                        (4000, 6),
+                        (5000, 6),
+                        (6300, 6)
+                    ]
+        return interruptores
+
     def get_factorAgrupamiento(self) -> List[Tuple[int, int, float]]:
         factorAgrupamiento = [
             (1, 3, 1.0),
