@@ -2,9 +2,10 @@ from copy import deepcopy
 from typing import List, Tuple
 from domain.entities.cable import Cable
 from domain.entities.carga import Carga
-from domain.entities.enums import Canalizacion, TipoCircuito
+from domain.entities.enums import Canalizacion, TipoCarga, TipoCircuito
 
 from domain.entities.interruptor import Interruptor
+from domain.strategies.calculo_interruptor_strategy import AlimentadorStrategy, CalculoDeInterruptorStrategy, FiltroStrategy, MotorStrategy, SeleccionInterruptor
 from domain.strategies.seleccion_conduccion_strategy import  SeleccionConduccionTrifasicaITMStrategy, SeleccionConduccionTrifasicaStrategy
 
 
@@ -15,6 +16,19 @@ class CalculadoraService:
     
     def seleccionar_interruptor(self, carga: Carga, interruptor: Interruptor) -> Interruptor:
         return interruptor.seleccionar_interruptor(carga.corriente_nominal)
+    
+    def seleccionar_tipo_de_carga(self, carga: Carga)-> CalculoDeInterruptorStrategy:
+        if carga.tipo_carga == TipoCarga.ALIMENTADOR:
+            return AlimentadorStrategy()
+        elif carga.tipo_carga == TipoCarga.MOTOR:
+            return MotorStrategy()
+        elif carga.tipo_carga == TipoCarga.FILTRO:
+            return FiltroStrategy()
+        elif carga.tipo_carga == TipoCarga.INTERRUPTOR_MANUAL:
+            return SeleccionInterruptor()
+            
+        else:
+            raise ValueError("Tipo de carga no válido")
     
     def seleccion_de_cable_por_capacidad_de_conduccion(self, carga: Carga, cable:Cable, opcion:str) -> float:
 

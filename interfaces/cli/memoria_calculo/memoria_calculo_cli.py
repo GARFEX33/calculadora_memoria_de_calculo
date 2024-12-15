@@ -45,10 +45,18 @@ class MemoriaDeCalculoCLI:
             print("Error: Tipo de circuito no seleccionado.")
 
     def seleccionar_interruptor_manual(self):
+        if self.tipo_circuito and  self.tipo_carga is not None:
+            self.carga = Carga(
+                tipo_circuito = self.tipo_circuito,
+                tipo_carga = self.tipo_carga,
+                )
         print("B)  SELECCION DEL INTERRUPTOR TERMOMAGNETICO")
-        self.interruptor.ampacidad = int(input("Ingrese el interruptor termomagnético en A: "))
         self.carga.tension = float(input("Ingrese el voltaje en V: "))
+        self.interruptor.ampacidad = int(input("Ingrese el interruptor termomagnético en A: "))
         self.carga.corriente_nominal = self.interruptor.ampacidad
+        print("Tipo de carga:", self.carga.tipo_carga)
+        self.interruptor.seleccionar_interruptor(self.carga.corriente_nominal)
+  
         if self.tipo_circuito is not None:
             print(f"Interruptor termomagnético seleccionado: {self.service.seleccionar_numero_hilos_interruptor(self.tipo_circuito)}X{self.interruptor.ampacidad} A")
         else:
@@ -63,6 +71,7 @@ class MemoriaDeCalculoCLI:
             self.carga.capacidad_conduccion = self.service.seleccion_de_cable_por_capacidad_de_conduccion(  self.carga, self.cable, opcion)
             print(f"Corriente por capacidad de conduccion es: {self.carga.capacidad_conduccion :.2f}")
             lista_cables = self.service.lista_de_cables_seleccionados(self.carga, self.interruptor, self.cable, self.canalizacion, opcion)
+            print(lista_cables)
             for numero_fases, cable in lista_cables:
                 print(f"Cable seleccionado {numero_fases}-{cable.calibre}THHN de {cable.material.value} soporta {cable.amperaje}A")
         print("c.2) Por caída de tensión")
@@ -81,7 +90,6 @@ class MemoriaDeCalculoCLI:
             self.tipo_carga = self.menu.menu_tipo_carga()
             if self.tipo_carga  == None:
                 break
-
             if self.menu.menu_seleccion_tipo_material_conductor():
                 break
             self.canalizacion = self.menu.menu_seleccion_canalizacion()
@@ -93,12 +101,15 @@ class MemoriaDeCalculoCLI:
                 if opcion_inicio == "1":
                     self.solicitar_datos_carga()
                     self.realizar_calculo_corriente_nominal()
+                    self.interruptor.calcular_tipo_carga = self.service.seleccionar_tipo_de_carga(self.carga)
                     self.calculo_del_interruptor_termomagnetico()
                     self.seleccion_conductor(opcion_inicio)
                     print("Memoria de cálculo finalizada.")
                     #break
                 else:
                     self.seleccionar_interruptor_manual()
+                    self.interruptor.calcular_tipo_carga = self.service.seleccionar_tipo_de_carga(self.carga)
+
                     self.seleccion_conductor(opcion_inicio)
                     print("Memoria de cálculo finalizada.")
                     #break

@@ -13,6 +13,8 @@ class CalculoDeInterruptorStrategy(ABC):
 
         for rango in rangos:
             if corriente_nominal <= rango[0]:
+                print(f"Interruptor termomagnético seleccionado: {rango[1]}X{rango[0]}A")
+                print(f"Corriente nominal: {corriente_nominal:.2f} A")
                 return rango
         raise ValueError("Temperatura fuera de rango para cables de 90°C")
 
@@ -30,3 +32,8 @@ class MotorStrategy(CalculoDeInterruptorStrategy):
 class FiltroStrategy(CalculoDeInterruptorStrategy):
     def calcular(self, corriente: float) -> Tuple[int, int]:
         return self.seleccionar(corriente * 1.35)
+
+class SeleccionInterruptor(CalculoDeInterruptorStrategy):
+    def calcular(self, corriente: float) -> Tuple[int, int]:
+        print("Seleccion de interruptor en calcular")
+        return self.seleccionar(corriente)

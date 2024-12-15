@@ -12,6 +12,7 @@ def main():
         factor_potencia = 1,
         tipo_circuito = TipoCircuito.DELTA,
         tipo_carga = TipoCarga.ALIMENTADOR, 
+        
         )
     canalizacion = Canalizacion.TUBERIA
     interruptor = Interruptor(

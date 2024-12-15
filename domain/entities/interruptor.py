@@ -21,6 +21,7 @@ class Interruptor(BaseModel):
 
     def seleccionar_interruptor(self, corriente: float ) -> 'Interruptor':
          self.ampacidad, self.bornes  = self.calcular_tipo_carga.calcular(corriente)
-         return self    
+         return self   
+    
 
 

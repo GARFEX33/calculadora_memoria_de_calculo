@@ -10,6 +10,7 @@ class TipoCarga(Enum):
     ALIMENTADOR = "Alimentador"
     MOTOR = "Motor"
     FILTRO = "Filtro"
+    INTERRUPTOR_MANUAL = "Interruptor Manual"
 
 class TipoMaterialCable(Enum):
     COBRE = "Cobre"
