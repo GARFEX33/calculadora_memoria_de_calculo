@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import Tuple
 
 from domain.entities.cable import Cable
 from domain.entities.carga import Carga
@@ -14,31 +13,34 @@ class SeleccionConduccionStrategy(ABC):
     def caida_de_tension(self) -> float:
         pass
     
-    def seleccionar_cable(self, carga: Carga, cable: Cable, canalizacion: Canalizacion) -> Tuple[str, int]:
-        
-        if carga.corriente_nominal < 100 and canalizacion == Canalizacion.TUBERIA and carga.tension < 2000 and cable.material == TipoMaterialCable.COBRE:
-            seleccionar = SeleccionarCableCobreTemp60Tubo()
-        elif carga.corriente_nominal >= 100 and canalizacion == Canalizacion.TUBERIA and carga.tension < 2000 and cable.material == TipoMaterialCable.COBRE:   
-            seleccionar = SeleccionarCableCobreTemp75Tubo()
-        elif carga.corriente_nominal < 100 and canalizacion == Canalizacion.TUBERIA and carga.tension < 2000 and cable.material == TipoMaterialCable.ALUMINIO:
-            seleccionar = SeleccionarCableAluminioTemp60Tubo()
-        elif carga.corriente_nominal >= 100 and canalizacion == Canalizacion.TUBERIA and carga.tension < 2000 and cable.material == TipoMaterialCable.ALUMINIO:
-            seleccionar = SeleccionarCableAluminioTemp75Tubo()
-        elif carga.corriente_nominal < 100 and canalizacion == Canalizacion.CHAROLA and carga.tension < 2000 and cable.material == TipoMaterialCable.COBRE:
-            seleccionar = SeleccionarCableCobreTemp60Charola()
-        elif carga.corriente_nominal >= 100 and canalizacion == Canalizacion.CHAROLA and carga.tension < 2000 and cable.material == TipoMaterialCable.COBRE:
-            seleccionar = SeleccionarCableCobreTemp75Charola()
-        elif carga.corriente_nominal < 100 and canalizacion == Canalizacion.CHAROLA and carga.tension < 2000 and cable.material == TipoMaterialCable.ALUMINIO:
-            seleccionar = SeleccionarCableAluminioTemp60Charola()
-        elif carga.corriente_nominal >= 100 and canalizacion == Canalizacion.CHAROLA and carga.tension < 2000 and cable.material == TipoMaterialCable.ALUMINIO:
-            seleccionar = SeleccionarCableAluminioTemp75Charola()
-        
-        
+    def seleccionar_cable(self, carga: Carga, cable: Cable, canalizacion: Canalizacion, numero_de_hilos_por_fase:int) -> Cable:
+        if carga.corriente_nominal < 100 and canalizacion == Canalizacion.TUBERIA and carga.tension < 2000 and cable.material == TipoMaterialCable.COBRE and numero_de_hilos_por_fase == 1:
+            seleccionar = SeleccionarCableCobreTemp60Tubo(cable)
+        elif carga.corriente_nominal >= 100 and canalizacion == Canalizacion.TUBERIA and carga.tension < 2000 and cable.material == TipoMaterialCable.COBRE and numero_de_hilos_por_fase >= 1:   
+            seleccionar = SeleccionarCableCobreTemp75Tubo(cable)
+        elif carga.corriente_nominal < 100 and canalizacion == Canalizacion.TUBERIA and carga.tension < 2000 and cable.material == TipoMaterialCable.ALUMINIO and numero_de_hilos_por_fase == 1:
+            seleccionar = SeleccionarCableAluminioTemp60Tubo(cable)
+        elif carga.corriente_nominal >= 100 and canalizacion == Canalizacion.TUBERIA and carga.tension < 2000 and cable.material == TipoMaterialCable.ALUMINIO and numero_de_hilos_por_fase >= 1:
+            seleccionar = SeleccionarCableAluminioTemp75Tubo(cable)
+        elif carga.corriente_nominal < 100 and canalizacion == Canalizacion.CHAROLA and carga.tension < 2000 and cable.material == TipoMaterialCable.COBRE and numero_de_hilos_por_fase == 1:
+            seleccionar = SeleccionarCableCobreTemp60Charola(cable)
+        elif carga.corriente_nominal >= 100 and canalizacion == Canalizacion.CHAROLA and carga.tension < 2000 and cable.material == TipoMaterialCable.COBRE and numero_de_hilos_por_fase == 1:
+            seleccionar = SeleccionarCableCobreTemp75Charola(cable)
+        elif carga.corriente_nominal < 100 and canalizacion == Canalizacion.CHAROLA and carga.tension < 2000 and cable.material == TipoMaterialCable.ALUMINIO and numero_de_hilos_por_fase== 1:
+            seleccionar = SeleccionarCableAluminioTemp60Charola(cable)
+        elif carga.corriente_nominal >= 100 and canalizacion == Canalizacion.CHAROLA and carga.tension < 2000 and cable.material == TipoMaterialCable.ALUMINIO and numero_de_hilos_por_fase == 1:
+            seleccionar = SeleccionarCableAluminioTemp75Charola(cable)
+        elif carga.corriente_nominal >= 100 and canalizacion == Canalizacion.CHAROLA and carga.tension < 2000 and cable.material == TipoMaterialCable.COBRE and numero_de_hilos_por_fase > 1:
+            seleccionar = SeleccionarCableCobreTemp75CharolaTriangular(cable)
+        elif carga.corriente_nominal >= 100 and canalizacion == Canalizacion.CHAROLA and carga.tension < 2000 and cable.material == TipoMaterialCable.ALUMINIO and numero_de_hilos_por_fase > 1:
+            seleccionar = SeleccionarCableAluminioTemp75CharolaTriangular(cable)
+
         else:    
             raise NotImplementedError("Este método debe ser implementado por las subclases")
-        return seleccionar.seleccionar(carga)
+        return seleccionar.seleccionar(carga)  # type: ignore
     
     def capacidad_de_conduccion(self, cable:Cable, carga: Carga)->float:
+        
         return carga.corriente_nominal /(self.factor_de_agrupamiento(carga.hilos) * self.factor_temperatura(cable, carga))
     
     def factor_temperatura(self, cable: Cable, carga: Carga) -> float:

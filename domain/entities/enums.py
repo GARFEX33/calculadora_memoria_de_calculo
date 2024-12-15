@@ -1,6 +1,6 @@
 from enum import Enum
 
-class TipoSistema(Enum):
+class TipoCircuito(Enum):
     ESTRELLA = "Estrella"
     DELTA = "Delta"
     #BIFASICO = "Bifásico"

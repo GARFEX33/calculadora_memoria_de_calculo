@@ -9,7 +9,6 @@ class CalculoDeInterruptorStrategy(ABC):
         pass
     
     def seleccionar(self, corriente_nominal: float) -> Tuple[int, int]:
-        print(f"Corriente nominal para interruptor: {corriente_nominal}")
         rangos: List[Tuple[int, int]] = DataList().get_lista_de_interruptores()
 
         for rango in rangos:
