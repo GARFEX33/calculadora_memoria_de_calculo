@@ -1,10 +1,11 @@
 from copy import deepcopy
-from typing import List, Tuple
+from typing import List
 from domain.entities.cable import Cable
 from domain.entities.carga import Carga
 from domain.entities.enums import Canalizacion, TipoCarga, TipoCircuito
 
 from domain.entities.interruptor import Interruptor
+from domain.entities.lista_cables import CableSelecciondo
 from domain.strategies.calculo_interruptor_strategy import AlimentadorStrategy, CalculoDeInterruptorStrategy, FiltroStrategy, MotorStrategy, SeleccionInterruptor
 from domain.strategies.seleccion_conduccion_strategy import  SeleccionConduccionTrifasicaITMStrategy, SeleccionConduccionTrifasicaStrategy
 
@@ -67,17 +68,19 @@ class CalculadoraService:
             hilos = 1
         return hilos
     
-    def lista_de_cables_seleccionados(self, carga: Carga, interruptor: Interruptor, cable: Cable, canalizacion: Canalizacion,  opcion:str)-> List[ Tuple[(int,Cable)] ]:
-        cables: List[ Tuple[(int,Cable)] ]= []
+    def lista_de_cables_seleccionados(self, carga: Carga, interruptor: Interruptor, cable: Cable, canalizacion: Canalizacion,  opcion:str)-> List[ CableSelecciondo ]:
+        cables: List[ CableSelecciondo]= []
         for i in range(interruptor.bornes):
-            # Crea una copia del objeto carga
             carga_copia = deepcopy(carga)
             carga_copia.capacidad_conduccion = carga.capacidad_conduccion / (i + 1)
             cable_copia = deepcopy(cable)
             
-            # Llama a seleccionar_cable y crea un nuevo Cable si es necesario
             cable_encontrado = self.selecionar_cable(carga_copia, cable_copia, canalizacion, opcion, interruptor)
-            
-            if cable_encontrado:
-                cables.append(( i+ 1,cable_encontrado))  # Agrega el nuevo cable a la lista
+            cable_seleccionado = CableSelecciondo(
+                cable= cable_encontrado,
+                cable_por_fase= i + 1,
+                #total_costo= cable_encontrado.costo * (i + 1)
+            )
+            if cable_encontrado:                
+                cables.append(cable_seleccionado)  
         return cables

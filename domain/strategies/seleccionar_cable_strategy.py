@@ -17,13 +17,14 @@ class SeleccionarCableStrategy(ABC):
                     self.cable.amperaje = rango[1]
                     return self.cable
             return None
+        
+
 
 class SeleccionarCableCobreTemp60Tubo(SeleccionarCableStrategy):
     def __init__(self,cable: Cable):
         super().__init__(cable) 
         self.rangos = DataList().get_ampacidadCobreTemp60Tubo()
 
-  
 class SeleccionarCableCobreTemp75Tubo(SeleccionarCableStrategy):
     def __init__(self,cable: Cable):
         super().__init__(cable) 

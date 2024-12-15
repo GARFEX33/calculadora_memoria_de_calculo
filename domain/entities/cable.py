@@ -13,6 +13,7 @@ class Cable(BaseModel):
     # resistencia: float
     # area_conductor_con_aislamiento: float
     # area_conductor_sin_aislamiento: float
+    costo: float = 0.0
 
     def seleccionar_temperatura_cable(self, amperaje: float):
         self.temperatura = 60 if amperaje < 100 else 75
