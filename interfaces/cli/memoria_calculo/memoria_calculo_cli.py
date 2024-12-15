@@ -26,6 +26,7 @@ class MemoriaDeCalculoCLI:
                 tipo_circuito = self.tipo_circuito,
                 tipo_carga = self.tipo_carga,
                 )
+        self.interruptor.calcular_tipo_carga = self.service.seleccionar_tipo_de_carga(self.carga)
         self.carga.tension = float(input("Ingrese el voltaje en V: "))
         self.carga.potencia = float(input("Ingrese la potencia en kW: "))
         self.carga.factor_potencia = float(input("Ingrese el factor de potencia (0-1): "))
@@ -50,6 +51,7 @@ class MemoriaDeCalculoCLI:
                 tipo_circuito = self.tipo_circuito,
                 tipo_carga = self.tipo_carga,
                 )
+        self.interruptor.calcular_tipo_carga = self.service.seleccionar_tipo_de_carga(self.carga)
         print("B)  SELECCION DEL INTERRUPTOR TERMOMAGNETICO")
         self.carga.tension = float(input("Ingrese el voltaje en V: "))
         self.interruptor.ampacidad = int(input("Ingrese el interruptor termomagnético en A: "))
@@ -84,32 +86,40 @@ class MemoriaDeCalculoCLI:
             if opcion_inicio == "3":
                 print("Saliendo del programa...")
                 break 
-            self.tipo_circuito = self.menu.menu_circuito()
-            if self.tipo_circuito == None:
-                break
-            self.tipo_carga = self.menu.menu_tipo_carga()
-            if self.tipo_carga  == None:
-                break
-            if self.menu.menu_seleccion_tipo_material_conductor():
-                break
-            self.canalizacion = self.menu.menu_seleccion_canalizacion()
-            if self.canalizacion == None:
-                break
+            
 
             try:
      
                 if opcion_inicio == "1":
+                    self.tipo_circuito = self.menu.menu_circuito()
+                    if self.tipo_circuito == None:
+                        break
+                    self.tipo_carga = self.menu.menu_tipo_carga()
+                    if self.tipo_carga  == None:
+                        break
+                    if self.menu.menu_seleccion_tipo_material_conductor():
+                        break
+                    self.canalizacion = self.menu.menu_seleccion_canalizacion()
+                    if self.canalizacion == None:
+                        break
+
                     self.solicitar_datos_carga()
                     self.realizar_calculo_corriente_nominal()
-                    self.interruptor.calcular_tipo_carga = self.service.seleccionar_tipo_de_carga(self.carga)
                     self.calculo_del_interruptor_termomagnetico()
                     self.seleccion_conductor(opcion_inicio)
                     print("Memoria de cálculo finalizada.")
                     #break
                 else:
+                    self.tipo_circuito = self.menu.menu_circuito()
+                    if self.tipo_circuito == None:
+                        break
+                    if self.menu.menu_seleccion_tipo_material_conductor():
+                        break
+                    self.canalizacion = self.menu.menu_seleccion_canalizacion()
+                    if self.canalizacion == None:
+                        break
+                    self.tipo_carga = TipoCarga.INTERRUPTOR_MANUAL
                     self.seleccionar_interruptor_manual()
-                    self.interruptor.calcular_tipo_carga = self.service.seleccionar_tipo_de_carga(self.carga)
-
                     self.seleccion_conductor(opcion_inicio)
                     print("Memoria de cálculo finalizada.")
                     #break
