@@ -1,5 +1,3 @@
-# interfaces/cli/calcula_amperaje/calcula_amperaje_cli.py
-
 from application.calculadora_service import CalculadoraService
 from domain.entities.cable import Cable
 from domain.entities.carga import Carga
@@ -73,9 +71,9 @@ class MemoriaDeCalculoCLI:
             self.carga.capacidad_conduccion = self.service.seleccion_de_cable_por_capacidad_de_conduccion(  self.carga, self.cable, opcion)
             print(f"Corriente por capacidad de conduccion es: {self.carga.capacidad_conduccion :.2f}")
             lista_cables = self.service.lista_de_cables_seleccionados(self.carga, self.interruptor, self.cable, self.canalizacion, opcion)
-            print(lista_cables)
-            for numero_fases, cable in lista_cables:
-                print(f"Cable seleccionado {numero_fases}-{cable.calibre}THHN de {cable.material.value} soporta {cable.amperaje}A")
+            for cable_seleccionado in lista_cables:
+
+                print(f"Cable seleccionado {cable_seleccionado.cable_por_fase}-{cable_seleccionado.cable.calibre}THHN de {cable_seleccionado.cable.material.value} soporta {cable_seleccionado.cable.amperaje}A")
         print("c.2) Por caída de tensión")
         pass
 
