@@ -7,8 +7,8 @@ from domain.strategies.calculadora_amperaje_strategy import CalculadoraAmperajeS
 
 class Carga(BaseModel):
     nombre: str = ""
-    tipo_circuito: TipoCircuito
-    tipo_carga: TipoCarga
+    tipo_circuito: TipoCircuito = TipoCircuito.ESTRELLA
+    tipo_carga: TipoCarga = TipoCarga.ALIMENTADOR
     potencia: float = 0
     tension: float = 0
     factor_potencia: float = 1

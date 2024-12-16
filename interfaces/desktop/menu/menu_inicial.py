@@ -1,27 +1,28 @@
-import flet as ft# type: ignore
+from typing import TYPE_CHECKING
+import flet as ft # type: ignore
 from interfaces.desktop.menu.componentes.boton_menu import BotonMenu
 from interfaces.desktop.menu.componentes.titulo_pagina import TituloPagina
 from interfaces.desktop.menu.menu_seleccion_carga import MenuSeleccionCarga 
+if TYPE_CHECKING:
+    from interfaces.desktop.main import CalculadoraGARFEX
 
 class MenuInicial:
-    def __init__(self):
-        self.__menu_inicial = {
-            "1": "Calcular Corriente Nominal y ajustes",
-            "2": "Seleccionar Interruptor Termomagnetico",
-            "3": "Salir"
-        }
-        self.__menu_seleccion_carga = MenuSeleccionCarga()
-
+    def __init__(self, app: "CalculadoraGARFEX") -> None:
+            self.__menu_inicial = {
+                "1": "Calcular Corriente Nominal y ajustes",
+                "2": "Seleccionar Interruptor Termomagnetico",
+                "3": "Salir"
+            }
+            self.__menu_seleccion_carga = MenuSeleccionCarga(app)
+        
+        
     def mostrar_menu_inicial(self, page: ft.Page):
-        # Título del menú
         page.add(TituloPagina("Iniciar Memoria de Calculo"))
-        # Crear botones para cada opción
         for key, value in self.__menu_inicial.items():
             page.add(BotonMenu(int(key), value,lambda e, opcion=key: self.ejecutar_opcion(opcion, page), ft.alignment.center))
 
     def ejecutar_opcion(self, opcion: str, page: ft.Page):
-        # Lógica basada en la opción seleccionada
-        page.clean()  # Limpia la pantalla para mostrar el contenido de la opción
+        page.clean()  
         if opcion == "1":
             self.__menu_seleccion_carga.mostrar_menu(page)
         elif opcion == "2":
