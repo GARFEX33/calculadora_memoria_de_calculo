@@ -7,6 +7,5 @@ def main():
     cli_amperaje = MemoriaDeCalculoCLI(CalculadoraService())
     cli_amperaje.ejecutar()
 
-
 if __name__ == "__main__":
     main()

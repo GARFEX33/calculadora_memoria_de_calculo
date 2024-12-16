@@ -1,15 +1,20 @@
 import flet as ft  # type: ignore
+from domain.entities.cable import Cable
 from domain.entities.carga import Carga
+from domain.entities.enums import Canalizacion
 from domain.entities.interruptor import Interruptor
-from interfaces.desktop.menu.menu_inicial import MenuInicial
+from interfaces.desktop.servicios.menu_service import MenuService
+
 
 class CalculadoraGARFEX:
     def __init__(self) -> None:
         # Inicializa variables que quieras mantener activas durante toda la aplicación
         self.page: ft.Page  
-        self.menu_inicial = MenuInicial(self)  
-        self.carga = Carga() 
-        self.interruptor = Interruptor()  
+        self.menu: MenuService = MenuService(self)
+        self.carga = Carga()
+        self.cable = Cable()
+        self.interruptor = Interruptor()
+        self.canalizacion: Canalizacion = Canalizacion.TUBERIA
     
     def run(self, page: ft.Page) -> None:
         """
@@ -24,7 +29,7 @@ class CalculadoraGARFEX:
         self.page.vertical_alignment = ft.MainAxisAlignment.START
 
         # Mostrar el menú inicial
-        self.menu_inicial.mostrar_menu_inicial( self.page)
+        self.menu.get_menu_inicio()
     
 
 # Ejecutar la aplicación

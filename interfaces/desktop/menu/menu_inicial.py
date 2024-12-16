@@ -1,8 +1,8 @@
-from typing import TYPE_CHECKING
 import flet as ft # type: ignore
+from typing import TYPE_CHECKING
+
 from interfaces.desktop.menu.componentes.boton_menu import BotonMenu
 from interfaces.desktop.menu.componentes.titulo_pagina import TituloPagina
-from interfaces.desktop.menu.menu_seleccion_carga import MenuSeleccionCarga 
 if TYPE_CHECKING:
     from interfaces.desktop.main import CalculadoraGARFEX
 
@@ -13,23 +13,23 @@ class MenuInicial:
                 "2": "Seleccionar Interruptor Termomagnetico",
                 "3": "Salir"
             }
-            self.__menu_seleccion_carga = MenuSeleccionCarga(app)
+            self.app: CalculadoraGARFEX = app
         
         
-    def mostrar_menu_inicial(self, page: ft.Page):
-        page.add(TituloPagina("Iniciar Memoria de Calculo"))
+    def mostrar_menu_inicial(self):
+        self.app.page.add(TituloPagina("Iniciar Memoria de Calculo"))
         for key, value in self.__menu_inicial.items():
-            page.add(BotonMenu(int(key), value,lambda e, opcion=key: self.ejecutar_opcion(opcion, page), ft.alignment.center))
+            self.app.page.add(BotonMenu(int(key), value,lambda e, opcion=key: self.ejecutar_opcion(opcion), ft.alignment.center))
 
-    def ejecutar_opcion(self, opcion: str, page: ft.Page):
-        page.clean()  
+    def ejecutar_opcion(self, opcion: str):
+        self.app.page.clean()  
         if opcion == "1":
-            self.__menu_seleccion_carga.mostrar_menu(page)
+            self.app.menu.get_menu_seleccion_carga()
         elif opcion == "2":
-            page.add(ft.Text("Has seleccionado: Seleccionar Interruptor Termomagnetico"))
+            self.app.page.add(ft.Text("Has seleccionado: Seleccionar Interruptor Termomagnetico"))
         elif opcion == "3":
-            page.add(ft.Text("¡Gracias por usar la calculadora!"))
-            page.update() # type: ignore
-            page.window_close()
+            self.app.page.add(ft.Text("¡Gracias por usar la calculadora!"))
+            self.app.page.update() # type: ignore
+            self.app.page.window_close()
         else:
-            page.add(ft.Text("Opción inválida, intenta de nuevo"))
+            self.app.page.add(ft.Text("Opción inválida, intenta de nuevo"))

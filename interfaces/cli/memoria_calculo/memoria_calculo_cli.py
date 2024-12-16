@@ -17,7 +17,6 @@ class MemoriaDeCalculoCLI:
         self.tipo_carga: TipoCarga | None = None
         self.interruptor: Interruptor = Interruptor()
         
-    
     def solicitar_datos_carga(self):
         if self.tipo_circuito and  self.tipo_carga is not None:
             self.carga = Carga(
@@ -63,7 +62,6 @@ class MemoriaDeCalculoCLI:
             print("Error: Tipo de circuito no seleccionado.")
 
     def seleccion_conductor(self,opcion: str):
-
         print("C)  SELECCION DEL CONDUCTOR")
         print("c.1) Por capacidad de conducción")
         self.cable.seleccionar_temperatura_cable(self.carga.capacidad_conduccion)
@@ -72,7 +70,6 @@ class MemoriaDeCalculoCLI:
             print(f"Corriente por capacidad de conduccion es: {self.carga.capacidad_conduccion :.2f}")
             lista_cables = self.service.lista_de_cables_seleccionados(self.carga, self.interruptor, self.cable, self.canalizacion, opcion)
             for cable_seleccionado in lista_cables:
-
                 print(f"Cable seleccionado {cable_seleccionado.cable_por_fase}-{cable_seleccionado.cable.calibre}THHN de {cable_seleccionado.cable.material.value} soporta {cable_seleccionado.cable.amperaje}A")
         print("c.2) Por caída de tensión")
         pass
@@ -124,3 +121,4 @@ class MemoriaDeCalculoCLI:
 
             except (ValueError, IndexError) as e:
                 print(f"Entrada no válida: {e}. Intente nuevamente.")
+
