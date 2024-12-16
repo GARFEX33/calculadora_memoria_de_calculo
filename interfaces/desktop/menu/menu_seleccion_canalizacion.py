@@ -21,7 +21,7 @@ class MenuSeleccionCanalizacion(MenuBase):
         enum_list: list[Canalizacion] = cast(list[Canalizacion], list(self.enum))        
         if opcion and 1 <= int(opcion) <= len(self.enum):
             self.app.canalizacion = enum_list[opcion - 1] 
-            self.app.page.add(ft.Text("Calcular para canalización: " + self.app.canalizacion.name))
+            self.app.menu.get_formulario_carga()
             print("Canalizacion ",self.app.canalizacion)
         elif opcion == int(len(self.enum) + 1): 
             self.app.menu.get_menu_inicio()
