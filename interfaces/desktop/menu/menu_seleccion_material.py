@@ -22,7 +22,6 @@ class MenuSeleccionMaterialConductor(MenuBase):
         if opcion and 1 <= int(opcion) <= len(self.enum):
             self.app.cable.material   = enum_list[opcion - 1]
             self.app.menu.get_menu_seleccion_canalizacion()
-            print(f"Material: {self.app.cable.material}")
         elif opcion == int(len(self.enum) + 1): 
             self.app.menu.get_menu_inicio()
         else:

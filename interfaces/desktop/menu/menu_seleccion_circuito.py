@@ -22,7 +22,6 @@ class MenuSeleccionCircuito(MenuBase):
         if opcion and 1 <= int(opcion) <= len(self.enum):
             self.app.carga.tipo_circuito = enum_list[opcion - 1]
             self.app.menu.get_menu_seleccion_material_conductor()
-            print("Circuito seleccionado ", self.app.carga.tipo_circuito )
         elif opcion == int(len(self.enum) + 1): 
             self.app.menu.get_menu_inicio()
         else:

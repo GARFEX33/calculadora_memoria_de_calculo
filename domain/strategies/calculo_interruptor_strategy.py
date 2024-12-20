@@ -13,8 +13,6 @@ class CalculoDeInterruptorStrategy(ABC):
 
         for rango in rangos:
             if corriente_nominal <= rango[0]:
-                print(f"Interruptor termomagnético seleccionado: {rango[1]}X{rango[0]}A")
-                print(f"Corriente nominal: {corriente_nominal:.2f} A")
                 return rango
         raise ValueError("Temperatura fuera de rango para cables de 90°C")
 

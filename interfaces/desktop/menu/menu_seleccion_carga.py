@@ -22,7 +22,6 @@ class MenuSeleccionCarga(MenuBase):
         if opcion and 1 <= int(opcion) <= len(self.enum):
             self.app.carga.tipo_carga = enum_list[opcion - 1] 
             self.app.menu.get_menu_seleccion_circuito()
-            print("Carga Seleccionada ", self.app.carga.tipo_carga  )
         elif opcion == int(len(self.enum) + 1): 
             self.app.menu.get_menu_inicio()
         else:

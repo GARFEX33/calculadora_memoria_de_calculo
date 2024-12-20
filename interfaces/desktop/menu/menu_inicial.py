@@ -24,7 +24,7 @@ class MenuInicial:
     def ejecutar_opcion(self, opcion: str):
         self.app.page.clean()  
         if opcion == "1":
-            self.app.menu.get_menu_seleccion_carga()
+            self.app.menu.get_formulario_nombre_carga()
         elif opcion == "2":
             self.app.page.add(ft.Text("Has seleccionado: Seleccionar Interruptor Termomagnetico"))
         elif opcion == "3":

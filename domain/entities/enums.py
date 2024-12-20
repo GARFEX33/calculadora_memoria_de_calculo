@@ -6,6 +6,16 @@ class TipoCircuito(Enum):
     #BIFASICO = "Bifásico"
     #MONOFASICO = "Monofásico"
 
+class TensionEnvoltaje(Enum):
+    
+    V127 = "127V"
+    V220 = "220V"
+    V440 = "440V"
+    V480 = "480V"
+    V13KV = "13.2KV"
+    V23KV = "23KV"
+    V34KV = "34.5KV"
+
 class TipoCarga(Enum):
     ALIMENTADOR = "Alimentador"
     MOTOR = "Motor"

@@ -82,7 +82,6 @@ class MemoriaDeCalculoCLI:
                 print("Saliendo del programa...")
                 break 
             
-
             try:
      
                 if opcion_inicio == "1":
