@@ -1,8 +1,9 @@
 import flet as ft # type: ignore
-from typing import Callable
+from flet.core.alignment import Alignment # type: ignore
+from typing import Callable, Optional
 
 class BotonMenu(ft.OutlinedButton):
-    def __init__(self, idx: int, menu: str, metodo_callback: Callable[[int], None], alignment  = ft.alignment.center_left )-> None: # type: ignore
+    def __init__(self, idx: int, menu: str, metodo_callback: Callable[[int], None], alignment: Optional[Alignment]  = ft.alignment.center_left )-> None: 
         super().__init__(  # type: ignore
             text= f"{menu}",
             width=300,

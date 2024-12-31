@@ -16,8 +16,6 @@ class MenuBase(ABC):
         self.app = app
         self.enum = enum
         self.titulo = titulo
-
-
     
     def mostrar_menu(self):
         # Título del menú

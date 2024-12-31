@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 
 from domain.entities.enums import TipoMaterialCable
@@ -8,7 +9,7 @@ class Cable(BaseModel):
     temperatura: int = 0
     amperaje: int = 0
     material: TipoMaterialCable = TipoMaterialCable.COBRE
-    # mm2: float
+    mm2: Optional[float] = None
     # diametro: float
     # resistencia: float
     # area_conductor_con_aislamiento: float

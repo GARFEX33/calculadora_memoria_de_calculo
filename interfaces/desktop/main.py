@@ -15,6 +15,7 @@ class CalculadoraGARFEX:
         self.cable = Cable()
         self.interruptor = Interruptor()
         self.canalizacion: Canalizacion = Canalizacion.TUBERIA
+        self.opcion: str = ""   
     
     def run(self, page: ft.Page) -> None:
         """

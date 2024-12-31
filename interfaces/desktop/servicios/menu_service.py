@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING
 from application.calculadora_service import CalculadoraService
 from domain.entities.enums import *
+from interfaces.desktop.caida_de_tension.calculo_caida_de_tension import CaidaDeTensionCalculo
 from interfaces.desktop.formularios.form_carga_nombre import FormularioCarga
 from interfaces.desktop.formularios.formulario_fp import FormularioFP
 from interfaces.desktop.formularios.formulario_potencia import FormularioPotencia
@@ -47,3 +48,6 @@ class MenuService:
     
     def get_memoria_de_calculo(self):
         return MemoriaDeCalculo(self.app, CalculadoraService()).mostrar_memoria()
+
+    def get_caida_de_tension(self):
+        return CaidaDeTensionCalculo(self.app, CalculadoraService()).mostrar_caida_de_tension()

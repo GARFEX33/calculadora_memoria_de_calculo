@@ -40,7 +40,6 @@ class SeleccionConduccionStrategy(ABC):
         return seleccionar.seleccionar(carga)  # type: ignore
     
     def capacidad_de_conduccion(self, cable:Cable, carga: Carga)->float:
-        
         return carga.corriente_nominal /(self.factor_de_agrupamiento(carga.hilos) * self.factor_temperatura(cable, carga))
     
     def factor_temperatura(self, cable: Cable, carga: Carga) -> float:
